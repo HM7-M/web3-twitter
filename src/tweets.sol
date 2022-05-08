@@ -10,7 +10,7 @@ contract tweets {
     constructor() {
         counter = 0;
         owner = msg.sender;
-     }
+    }
 
     struct tweet {
         address tweeter;
@@ -28,31 +28,31 @@ contract tweets {
 
     mapping(uint256 => tweet) Tweets;
 
-    function addTweet(
-        string memory tweetTxt,
-        string memory tweetImg
-        ) public payable {
-            require(msg.value == (1 ether), "Please submit 1 Matic");
-            tweet storage newTweet = Tweets[counter];
-            newTweet.tweetTxt = tweetTxt;
-            newTweet.tweetImg = tweetImg;
-            newTweet.tweeter = msg.sender;
-            newTweet.id = counter;
-            emit tweetCreated(
-                msg.sender, 
-                counter, 
-                tweetTxt, 
-                tweetImg
-            );
-            counter++;
+    function addTweet(string memory tweetTxt, string memory tweetImg) public payable {
+        require(msg.value == (1 ether), "Please submit 1 Matic");
+        tweet storage newTweet = Tweets[counter];
+        newTweet.tweetTxt = tweetTxt;
+        newTweet.tweetImg = tweetImg;
+        newTweet.tweeter = msg.sender;
+        newTweet.id = counter;
 
-            payable(owner).transfer(msg.value);
+        emit tweetCreated(
+            msg.sender,
+            counter,
+            tweetTxt,
+            tweetImg
+        );
+
+        counter++;
+        payable(owner).transfer(msg.value);
     }
 
-    function getTweet(uint256 id) public view returns (string memory, string memory, address){
+    function getTweet(uint256 id) public view returns(string memory, string memory, address){
         require(id < counter, "No such Tweet");
-
         tweet storage t = Tweets[id];
-        return (t.tweetTxt, t.tweetImg, t.tweeter);
+        return(t.tweetTxt,t.tweetImg,t.tweeter);
+
     }
+
+
 }
